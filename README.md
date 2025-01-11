@@ -13,6 +13,8 @@ You can just substitute the repo from above link with this one, but you still ne
 As the simulation was coded to make use of gamepad to control the robot, please download this to move the robot
 https://remotegamepad.com/
 
+***** ENSURE THAT YOUR VIRTUAL MACHINE INTERNET CONNECTION IS SET TO BRIDGED *****
+
 When you want to read controller, run:
   ros2 launch teleop_twist_joy teleop-launch.py joy_config:='xbox'
 
