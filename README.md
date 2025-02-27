@@ -25,9 +25,9 @@ Slam would make use of multiple packages:
 
   ### [LiDAR Pose](https://github.com/Adlink-ROS/rf2o_laser_odometry)
   
-  '''
-  git clone git@github.com:Adlink-ROS/rf2o_laser_odometry.git
-  '''
+'''
+git clone git@github.com:Adlink-ROS/rf2o_laser_odometry.git
+'''
 
   ### [robot_localization package](https://github.com/cra-ros-pkg/robot_localization/tree/humble-devel)
   install dependencies:
