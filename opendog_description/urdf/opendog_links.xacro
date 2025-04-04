@@ -54,6 +54,9 @@
         </collision>
     </link>
 
+<!-- *********** base footprint *********** -->
+    <link name="base_footprint">
+    </link>
 
     <!-- !!!!!!!!!!!!!!!!!!!!!!! HIPS !!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 

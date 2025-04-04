@@ -10,7 +10,32 @@ from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, 
 from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
 
-    # Get URDF via xacro
+
+    # Launch teleop, MPU6050 driver, odometry, agent and robot hardware interface & controllers
+
+    # description_prefix = get_package_share_directory("opendog_description")
+    # teleop_prefix = get_package_share_directory("werdna_teleop")
+    # agent_prefix = get_package_share_directory("werdna_agent")
+
+    # teleop_launch_file = os.path.join(teleop_prefix, "launch", "werdna_teleop.launch.py")
+
+    # teleop = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(teleop_launch_file),
+    # )
+    
+    # agent_node = Node(
+    #     package=agent_prefix,
+    #     executable="werdna_agent_node",
+    # )
+    
+    # # Launch ROS2 Control
+    # description_prefix = get_package_share_directory("opendog_description")
+    # xacro_file = os.path.join(description_prefix,'urdf','opendog.urdf.xacro')
+    # robot_description_config = xacro.process_file(xacro_file)
+
+    # params = {'robot_description': robot_description_config.toxml()}
+
+     # Get URDF via xacro
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -89,11 +114,7 @@ def generate_launch_description():
         output='both'
     )
 
-    #Teleop
-    # teleop = IncludeLaunchDescription(
-    #         PythonLaunchDescriptionSource('/home/pi/dog/src/robodog/opendog_launch/launch/opendog.launch.py'),
-    #     )
-
+#############################
 
     #Peripherals
     camera_node = Node(
@@ -113,8 +134,34 @@ def generate_launch_description():
                 )]),
     )
 
-    foxglove_bridge_node = ExecuteProcess(
-            cmd=['ros2', 'launch', 'foxglove_bridge', 'foxglove_bridge_launch.xml'],
+    lidar_odom = Node(
+                package='rf2o_laser_odometry',
+                executable='rf2o_laser_odometry_node',
+                name='rf2o_laser_odometry',
+                output='screen',
+                parameters=[{
+                    'laser_scan_topic' : '/scan',
+                    'odom_topic' : '/odom_rf2o',
+                    'publish_tf' : True,
+                    'base_frame_id' : 'base_link',
+                    'odom_frame_id' : 'odom',
+                    'init_pose_from_topic' : '',
+                    'freq' : 20.0}],
+            ),
+################################
+
+    #Teleop
+    # teleop = IncludeLaunchDescription(
+    #         PythonLaunchDescriptionSource('/home/pi/dog/src/robodog/opendog_launch/launch/opendog.launch.py'),
+    #     )
+
+    #Rviz
+    rviz_config_path = os.path.join(get_package_share_directory('opendog_bringup'), 'config', 'opendog.rviz')
+    rviz = Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            arguments=['-d', rviz_config_path],
             output='screen'
         )
 
@@ -129,10 +176,11 @@ def generate_launch_description():
 
         # load_joint_state_controller,
         # load_forward_command_controller,
-        load_joint_control_node,
+        # load_joint_control_node,
         # agent_node,
 
         # camera_node,
-        # lidar_launch
-        # foxglove_bridge_node
+        # lidar_launch,
+        # lidar_odom,
+        # rviz
     ])

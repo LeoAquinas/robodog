@@ -9,6 +9,12 @@
         <child link="world"/>
     </joint>
 
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    
     <!-- *********  FR_hip joint ********* -->
     <joint name="FR_hip_joint" type="revolute">
         <origin xyz="0.005372 -0.029025 0.34267" rpy="0 0 0"/>
